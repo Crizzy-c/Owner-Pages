@@ -1,0 +1,31 @@
+# 基础设置
+title: 香香大王                    # 显示在浏览器标签和 RSS 订阅中
+email: 2458943142@qq.com            # 可选，某些主题会显示在页脚
+description: >-                        # 网站描述，对 SEO 和 RSS 很重要
+  你好请介绍一下你自己。
+baseurl: ""                            # 如果你的站点不在根目录，比如项目页，需要填子路径，一般个人站点留空即可
+url: "https://你的用户名.github.io"     # 你的网站最终访问地址，不加末尾斜杠
+
+# 社交媒体/联系方式（按需修改，很多主题会自动读取并显示图标）
+twitter_username: 你的推特用户名
+github_username:  香香
+# 还可以加其他，比如 linkedin, facebook 等，取决于主题支持
+
+# 构建设置
+theme: jekyll-theme-hacker                          # 这是 GitHub Pages 默认的主题，你也可以换成其他主题，比如 cayman, jekyll-theme-hacker 等
+plugins:
+  - jekyll-feed                        # 自动生成 RSS feed
+  - jekyll-seo-tag                      # 自动生成 SEO 相关的 meta 标签
+  - jekyll-sitemap                      # 自动生成站点地图 sitemap.xml
+
+# 如果你不想让某些文件或目录出现在最终网站里，可以这样设置
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - README.md
+
+# 自定义变量（可选）
+# 你可以在页面或文章中用 site.custom_var 来访问
+custom_var: 这是我的自定义变量
