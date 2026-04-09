@@ -1,35 +1,557 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="林明的个人博客 - 分享技术思考与生活随想">
+    <title>林明博客 | 静思·随想</title>
+    <style>
+        /* ========== RESET & 基础变量 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Hello World</title>
-
+        :root {
+            --bg-site: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-lg: 1rem;
+            --radius-md: 0.75rem;
+            --transition: all 0.2s ease;
+        }
+    
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--bg-site);
+            color: var(--text-primary);
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+    
+        /* 容器 */
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+    
+        /* ========== 导航栏 ========== */
+        .navbar {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+    
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+    
+        .logo a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--accent), #6366f1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+    
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+    
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+    
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+    
+        /* ========== 头部简介区 (Hero) ========== */
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2rem;
+        }
+    
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(145deg, #e0f2fe, #bae6fd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 3.2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+    
+        .avatar:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+    
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #0f172a, #2d3a5e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    
+        .hero .tagline {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    
+        .hero .bio {
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-light);
+            display: inline-block;
+            padding-top: 0.75rem;
+        }
+    
+        /* ========== 博客列表区 ========== */
+        .blog-section {
+            margin: 2rem 0 2.5rem;
+        }
+    
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 650;
+            letter-spacing: -0.3px;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-light);
+            display: inline-block;
+        }
+    
+        .blog-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    
+        .blog-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 1.6rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--border-light);
+        }
+    
+        .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #cbd5e1;
+        }
+    
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+            gap: 0.5rem;
+        }
+    
+        .post-title {
+            font-size: 1.45rem;
+            font-weight: 650;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+    
+        .post-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+    
+        .post-title a:hover {
+            color: var(--accent);
+        }
+    
+        .post-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+        }
+    
+        .post-tags {
+            display: flex;
+            gap: 0.6rem;
+            margin: 0.75rem 0 0.9rem;
+            flex-wrap: wrap;
+        }
+    
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: #eef2ff;
+            color: var(--accent);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+        }
+    
+        .post-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 1.2rem;
+        }
+    
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+    
+        .read-more:hover {
+            gap: 0.6rem;
+            color: var(--accent-hover);
+        }
+    
+        /* ========== 关于区域 (About) ========== */
+        .about-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2.5rem 0 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            scroll-margin-top: 80px;
+        }
+    
+        .about-title {
+            font-size: 1.6rem;
+            font-weight: 650;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    
+        .about-content {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+    
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+    
+        .social-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+    
+        .social-links a:hover {
+            background: var(--accent);
+            color: white;
+        }
+    
+        /* ========== 页脚 ========== */
+        .footer {
+            border-top: 1px solid var(--border-light);
+            margin-top: 3rem;
+            padding: 2rem 0 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background-color: var(--bg-card);
+        }
+    
+        .footer p {
+            margin-top: 0.5rem;
+        }
+    
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+            .logo a {
+                font-size: 1.3rem;
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+            .hero {
+                padding: 2rem 0 1rem;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2.6rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .blog-card {
+                padding: 1.2rem;
+            }
+            .post-title {
+                font-size: 1.25rem;
+            }
+            .about-section {
+                padding: 1.4rem;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .social-links {
+                gap: 0.8rem;
+            }
+        }
+    
+        /* 辅助元素 */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-light);
+            margin: 0.5rem 0 1rem;
+        }
+        .dot {
+            color: var(--accent);
+        }
+    </style>
 </head>
-
-<style>
-
-  h1{
-
-​    justify-content: center;
-
-  }
-
-
-
-  
-
-</style>
-
 <body>
 
-  <h1>香香大王的个人网站</h1>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <a href="#">林明·随想录</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">首页</a></li>
+            <li><a href="#about">关于</a></li>
+        </ul>
+    </div>
+</nav>
 
+<main class="container">
+    <!-- 个人简介 Hero -->
+    <div class="hero">
+        <div class="avatar">
+            🌿
+        </div>
+        <h1>林明 · Lin Ming</h1>
+        <div class="tagline">写代码，写诗，记录思考的余温</div>
+        <div class="bio">
+            ✨ 前端开发者 | 独立创作者 | 乐于探索简洁优雅的解决方案
+        </div>
+    </div>
+
+    <!-- 博客文章列表区域 -->
+    <section class="blog-section">
+        <h2 class="section-title">📝 最新笔记</h2>
+        <div class="blog-grid">
+            
+            <!-- 文章卡片 1 -->
+            <article class="blog-card">
+                <div class="card-header">
+                    <h3 class="post-title"><a href="#">深入理解CSS Grid布局</a></h3>
+                    <span class="post-date">2025.03.15</span>
+                </div>
+                <div class="post-tags">
+                    <span class="tag">CSS</span>
+                    <span class="tag">现代布局</span>
+                    <span class="tag">响应式</span>
+                </div>
+                <p class="post-excerpt">
+                    Grid 彻底改变了网页布局的方式，告别浮动和复杂定位。本文从核心概念到实战案例，带你掌握 Grid 强大且灵活的一维/二维布局系统，并配合容器查询打造真正的弹性页面...
+                </p>
+                <a href="#" class="read-more" aria-label="阅读全文">阅读全文 →</a>
+            </article>
+    
+            <!-- 文章卡片 2 -->
+            <article class="blog-card">
+                <div class="card-header">
+                    <h3 class="post-title"><a href="#">Vue3 组合式 API 优雅实践</a></h3>
+                    <span class="post-date">2025.03.08</span>
+                </div>
+                <div class="post-tags">
+                    <span class="tag">Vue.js</span>
+                    <span class="tag">组合式API</span>
+                    <span class="tag">前端工程化</span>
+                </div>
+                <p class="post-excerpt">
+                    组合式 API 让逻辑复用和代码组织变得更加清晰。本文将分享如何通过 composables 抽离业务逻辑，优雅管理状态和副作用，让中型项目维护性大幅提升...
+                </p>
+                <a href="#" class="read-more" aria-label="阅读全文">阅读全文 →</a>
+            </article>
+    
+            <!-- 文章卡片 3 -->
+            <article class="blog-card">
+                <div class="card-header">
+                    <h3 class="post-title"><a href="#">现代 JavaScript 异步编程: Promise, async/await 与底层原理</a></h3>
+                    <span class="post-date">2025.02.28</span>
+                </div>
+                <div class="post-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">异步</span>
+                    <span class="tag">进阶</span>
+                </div>
+                <p class="post-excerpt">
+                    从回调地狱到优雅的 async 函数，异步编程演进重塑了前端体验。深度剖析事件循环、微任务与宏任务，手写 Promise 核心源码思路，带你彻底吃透异步世界...
+                </p>
+                <a href="#" class="read-more" aria-label="阅读全文">阅读全文 →</a>
+            </article>
+    
+            <!-- 文章卡片 4 -->
+            <article class="blog-card">
+                <div class="card-header">
+                    <h3 class="post-title"><a href="#">打造完美的暗色模式设计系统</a></h3>
+                    <span class="post-date">2025.02.20</span>
+                </div>
+                <div class="post-tags">
+                    <span class="tag">设计体系</span>
+                    <span class="tag">CSS变量</span>
+                    <span class="tag">UX</span>
+                </div>
+                <p class="post-excerpt">
+                    暗色模式不仅酷，更能减轻视觉疲劳。通过 CSS 自定义属性与 `prefers-color-scheme` 构建动态主题，配合无障碍对比度，让界面在深色与亮色间无缝切换...
+                </p>
+                <a href="#" class="read-more" aria-label="阅读全文">阅读全文 →</a>
+            </article>
+        </div>
+    </section>
+    
+    <!-- 关于作者 + 联系方式区块 (锚点: about) -->
+    <div id="about" class="about-section">
+        <div class="about-title">
+            ✦ 关于我
+        </div>
+        <div class="about-content">
+            <p>👋 你好，我是林明，一名热爱创造的独立前端开发者和内容创作者。过去几年深耕于现代 Web 技术，喜欢在代码和文字之间寻找平衡。相信好的设计不仅是视觉享受，更是有温度的体验。</p>
+            <p style="margin-top: 12px;">📖 这个博客记录我学习新技术的思考、项目重构的复盘以及生活里的闪光片段。如果你对前端、交互设计或效率工具感兴趣，欢迎常来逛逛，也期待和你交流。</p>
+            <p style="margin-top: 12px;">📬 目前开放技术交流与轻量合作，可于下方平台找到我。</p>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank" rel="noopener">🐙 GitHub</a>
+            <a href="#" target="_blank" rel="noopener">🐦 X (Twitter)</a>
+            <a href="#" target="_blank" rel="noopener">📧 邮箱联系</a>
+            <a href="#" target="_blank" rel="noopener">📝 掘金专栏</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2025 林明博客 · 保持好奇与热爱</p>
+        <p style="font-size: 0.75rem; margin-top: 8px;">基于纯粹 HTML/CSS 构建 · 静心书写</p>
+    </div>
+</footer>
+
+<!-- 简单的占位链接行为（防止空链接跳转顶部）-->
+<script>
+    (function() {
+        // 让所有空链接（href="#"）平滑停留在当前页面，不产生页面跳动
+        const emptyLinks = document.querySelectorAll('a[href="#"]');
+        emptyLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // 可添加微提示或仅阻止跳转，保持演示优雅
+            });
+        });
+        // 平滑滚动至about区域 (同时处理导航栏点击)
+        const aboutLink = document.querySelector('.nav-links a[href="#about"]');
+        if(aboutLink) {
+            aboutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                const aboutSection = document.getElementById('about');
+                if(aboutSection) {
+                    aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+        // 可选: logo点击回到顶部
+        const logoLink = document.querySelector('.logo a');
+        if(logoLink) {
+            logoLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        // 阅读更多链接目前为空，全部阻止跳转保持演示整洁；如果想保留可改为 "#demo"
+        // 同时不干扰用户体验，添加控制台友好提示
+        const readMoreLinks = document.querySelectorAll('.read-more');
+        readMoreLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // 可在此模拟提示，但为了让界面干净，不做弹窗
+                console.log('📖 完整文章示例: 实际部署后可替换真实文章链接');
+            });
+        });
+    })();
+</script>
 </body>
-
 </html>
